@@ -57,8 +57,11 @@ public class Calculator {
         opButtons[3] = divButton;
 
         clrButton = new JButton("AC");
-        clrButton.addActionListener(e -> {
-            clearAll();
+        clrButton.addActionListener(e -> clearAll());
+
+        decButton = new JButton(".");
+        decButton.addActionListener(e -> {
+            textfield.setText(textfield.getText() + e.getActionCommand());
         });
 
         panel = new JPanel(new GridLayout(5, 3, 10, 10));
@@ -123,6 +126,7 @@ public class Calculator {
         JButton formattedEqButton = formatButton(eqButton);
         panel.add(formattedEqButton);
         panel.add(clrButton);
+        panel.add(decButton);
 
         frame.add(panel);
         frame.add(textfield);

@@ -7,7 +7,7 @@ public class Calculator {
     JButton[] numberButtons = new JButton[10];
     JButton[] opButtons = new JButton[4];
     JButton addButton, subButton, mulButton, divButton;
-    JButton decButton, eqButton, delButton, clrButton;
+    JButton decButton, eqButton, bspButton, clrButton;
     JPanel panel;
     JTextField textfield;
 
@@ -45,10 +45,6 @@ public class Calculator {
         mulButton = new JButton("*");
         divButton = new JButton("/");
         eqButton = new JButton("=");
-        addButton.setSize(20, 20);
-        subButton.setSize(20, 20);
-        mulButton.setSize(20, 20);
-        divButton.setSize(20, 20);
 
 
         opButtons[0] = addButton;
@@ -67,6 +63,15 @@ public class Calculator {
             textfield.setText(textfield.getText() + e.getActionCommand());
         });
 
+        bspButton = new JButton("\u2190"); // Unicode for ←
+        bspButton.addActionListener(e -> {
+            String text = textfield.getText();
+            if (text.length() > 1) {
+                textfield.setText(text.substring(0, text.length() - 1));
+                setNumber();
+            }
+        });
+
         panel = new JPanel(new GridLayout(5, 3, 10, 10));
         panel.setBounds(50, 100, 300, 300);
 
@@ -79,8 +84,8 @@ public class Calculator {
 
         // Set up number buttons
         for (int i = 0; i < numberButtons.length; i++) {
-            JButton newButton = new JButton(Integer.toString(i));
-            newButton.addActionListener(e -> {
+            JButton numberButton = new JButton(Integer.toString(i));
+            numberButton.addActionListener(e -> {
                 if (textfield.getClientProperty("clicked").equals(false)) {
                     textfield.putClientProperty("clicked", true);
                     textfield.setText(e.getActionCommand());
@@ -88,19 +93,15 @@ public class Calculator {
                     textfield.setText(textfield.getText() + e.getActionCommand());
                 }
 
-                if (operator == null || operator.isEmpty()) {
-                    num1 = Double.parseDouble(textfield.getText());
-                } else {
-                    num2 = Double.parseDouble(textfield.getText());
-                }
+                setNumber();
                 System.out.printf("\n" +
                         "Num1: %s\n" +
                         "Operator: %s\n" +
                         "Num2: %s", num1, operator, num2);
             });
-            JButton formattedButton = formatButton(newButton);
-            numberButtons[i] = formattedButton;
-            panel.add(formattedButton);
+            JButton formattedNumButton = formatButton(numberButton);
+            numberButtons[i] = formattedNumButton;
+            panel.add(formattedNumButton);
         }
 
         // Set up operation buttons
@@ -128,8 +129,12 @@ public class Calculator {
 
         JButton formattedEqButton = formatButton(eqButton);
         panel.add(formattedEqButton);
-        panel.add(clrButton);
-        panel.add(decButton);
+        JButton formattedClrButton = formatButton(clrButton);
+        formattedClrButton.setFont(new Font("Arial", Font.PLAIN, 20));
+        panel.add(formattedClrButton);
+        JButton formattedDecButton = formatButton(decButton);
+        panel.add(formattedDecButton);
+        panel.add(bspButton);
 
         frame.add(panel);
         frame.add(textfield);
@@ -175,7 +180,16 @@ public class Calculator {
     private JButton formatButton(JButton button) {
         button.setFocusable(false);
         button.setFont(new Font("Arial", Font.PLAIN, 30));
+        button.setSize(50, 50);
         return button;
+    }
+
+    private void setNumber() {
+        if (operator == null || operator.isEmpty()) {
+            num1 = Double.parseDouble(textfield.getText());
+        } else {
+            num2 = Double.parseDouble(textfield.getText());
+        }
     }
 
     public static void main(String[] args) {

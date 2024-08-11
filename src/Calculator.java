@@ -80,6 +80,7 @@ public class Calculator {
         textfield.setFont(myFont);
         textfield.setEditable(false);
         textfield.setFocusable(false);
+        textfield.setBackground(new Color(107, 201, 201));
         textfield.putClientProperty("clicked", false);
 
         // Set up number buttons
@@ -109,6 +110,11 @@ public class Calculator {
             button.setFocusable(false);
             button.addActionListener(e -> {
                 textfield.putClientProperty("clicked", false);
+                if (operator != null && !operator.isEmpty()) {
+                    result = calculate(operator, num1, num2);
+                    textfield.setText(Double.toString(result));
+                    setupForNextCalc();
+                }
                 operator = e.getActionCommand();
             });
 
@@ -121,6 +127,9 @@ public class Calculator {
                     "Num1: %s\n" +
                     "Operator: %s\n" +
                     "Num2: %s", num1, operator, num2);
+            if (operator == null || operator.isEmpty()) {
+                return;
+            }
             result = calculate(operator, num1, num2);
             textfield.setText(Double.toString(result));
             System.out.printf("\nResult is %s", result);

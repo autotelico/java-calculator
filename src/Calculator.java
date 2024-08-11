@@ -134,7 +134,8 @@ public class Calculator {
         panel.add(formattedClrButton);
         JButton formattedDecButton = formatButton(decButton);
         panel.add(formattedDecButton);
-        panel.add(bspButton);
+        JButton formattedBspButton = formatButton(bspButton);
+        panel.add(formattedBspButton);
 
         frame.add(panel);
         frame.add(textfield);

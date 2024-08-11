@@ -61,6 +61,9 @@ public class Calculator {
 
         decButton = new JButton(".");
         decButton.addActionListener(e -> {
+            if (textfield.getText().contains(".")) {
+                return;
+            }
             textfield.setText(textfield.getText() + e.getActionCommand());
         });
 
